@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie App</title>
+    <style>
+        * {
+            padding: 0%;
+            margin: 0%;
+            list-style: none;
+            background-color: black;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 20px auto;
+            border: 1px solid;
+        }
+
+        .srh {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+
+        }
+
+        .srh h1 {
+
+            border-radius: 10px;
+            background-color: greenyellow;
+            color: white;
+            padding: 10px;
+        }
+
+        input {
+            width: 850px;
+            padding: 0px 30px;
+            background-color: white;
+            /* border: none;
+            outline: none; */
+        }
+
+        .content {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+
+        .box {
+            width: 22%;
+            margin: 1% auto;
+            border: 1px solid;
+            border-radius: 5px;
+        }
+
+        .box img {
+            width: 100%;
+            border-radius: 5px;
+        }
+
+        .inner {
+            display: flex;
+            justify-content: space-between;
+            font-size: 19px;
+            padding: 5px;
+        }
+
+        .left {
+            color: white;
+            font-family: sans-serif;
+            font-style: 16px;
+            font-weight: 600;
+        }
+
+        .right {
+            color: white;
+            font-family: sans-serif;
+            font-style: 16px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="srh">
+            <h1>Search Movie</h1>
+            <input type="text" placeholder="Search a movie" class="input">
+        </div>
+        <div class="content">
+            <!-- <div class="box">
+                <img src=" https://image.tmdb.org/t/p/w1280/mClzWv7gBqgXfjZXp49Enyoex1v.jpg" alt="">
+                <div class="inner">
+                    <div class="left">cosmic chaos</div>
+                    <div class="right">2023-08-03</div>
+                </div>
+            </div> -->
+
+
+        </div>
+    </div>
+
+</body>
+<script>
+    let content = document.querySelector(".content")
+    let showcard = async (search) => {
+        let api;
+        if (search == undefined || search == "") {
+            api = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
+        } else {
+            api = `https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=${search}`;
+        }
+        let data = await fetch(api)
+
+        let jsondata = await data.json()
+
+        let newdata = jsondata.results
+
+        content.innerHTML = ""
+        imageurl = "https://image.tmdb.org/t/p/w1280"
+        newdata.forEach((data, index) => {
+            content.innerHTML += `
+            <div class="box">
+                <img src=${imageurl + data.poster_path} alt="">
+                <div class="inner">
+                    <div class="left">${data.original_title}</div>
+                    
+                    <div class="right">${data.release_date}</div>
+                </div>
+            </div> `
+
+        });
+    }
+    showcard()
+
+    let myinput = document.querySelector('.input');
+    myinput.addEventListener("keyup", (e) => {
+        let search = e.target.value;
+        showcard(search)
+    })
+</script>
+
+</html>
