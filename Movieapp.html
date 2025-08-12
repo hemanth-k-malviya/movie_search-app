@@ -29,7 +29,7 @@
         .srh h1 {
 
             border-radius: 10px;
-            background-color: greenyellow;
+            background-color: rgb(9, 165, 216);
             color: white;
             padding: 10px;
         }
@@ -38,8 +38,9 @@
             width: 850px;
             padding: 0px 30px;
             background-color: white;
-            /* border: none;
-            outline: none; */
+            border-radius: 10px;
+             border: none;
+            outline: none; 
         }
 
         .content {
@@ -54,6 +55,12 @@
             margin: 1% auto;
             border: 1px solid;
             border-radius: 5px;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .box:hover {
+            box-shadow: 0 0 16px 2px #e7eeec;
+            transform: scale(1.04);
+            border-color: #7fffd4;
         }
 
         .box img {
@@ -81,6 +88,37 @@
             font-style: 16px;
             font-weight: 600;
         }
+
+        ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            /* margin-left: 800px; */
+        }
+
+        ul li {
+            margin-left: 10px;
+        }
+
+        ul li button {
+            /* border: none; */
+            background: linear-gradient(90deg, #232526 0%, #414345 100%);
+            padding: 8px 18px;
+            color: #a4bfb6;
+            font-size: 20px;
+            border-radius: 8px;
+            border: 1px solid #7fffd4;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(127,255,212,0.08);
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s, border 0.2s;
+        }
+        ul li button:hover {
+            background: linear-gradient(90deg, #eefbf6 0%, #232526 100%);
+            color: #232526;
+            box-shadow: 0 0 12px 2px #96dac3;
+            border: 1px solid #fff;
+            transform: scale(1.12);
+        }
     </style>
 </head>
 
@@ -91,25 +129,29 @@
             <input type="text" placeholder="Search a movie" class="input">
         </div>
         <div class="content">
-            <!-- <div class="box">
+            <div class="box">
                 <img src=" https://image.tmdb.org/t/p/w1280/mClzWv7gBqgXfjZXp49Enyoex1v.jpg" alt="">
                 <div class="inner">
                     <div class="left">cosmic chaos</div>
                     <div class="right">2023-08-03</div>
                 </div>
-            </div> -->
-
-
+            </div>
         </div>
     </div>
+    <div>
+        <ul>
+            <!-- <li><button>1</button></li>
+            <li><button>2</button></li> -->
 
+        </ul>
+    </div>
 </body>
 <script>
     let content = document.querySelector(".content")
-    let showcard = async (search) => {
+    let showcard = async (search,id=1) => {
         let api;
         if (search == undefined || search == "") {
-            api = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
+            api = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=${id}`;
         } else {
             api = `https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=${search}`;
         }
@@ -139,8 +181,16 @@
     let myinput = document.querySelector('.input');
     myinput.addEventListener("keyup", (e) => {
         let search = e.target.value;
-        showcard(search)
-    })
+        showcard(search,"")
+    });
+    let ul = document.querySelector("ul")
+
+    for (i = 1; i <= 10; i++) {
+        ul.innerHTML += `<li onclick="page(${i})"><button>${i}</button></li>`
+    }
+    let page = (id) => {
+    showcard("",id)
+    }
 </script>
 
 </html>
